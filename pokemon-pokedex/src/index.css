@@ -48,7 +48,8 @@ p{
   font-size: 2.2rem;
   font-weight: 500;
   color: #6b6b6b;
- 
+  text-wrap: 1;
+  
 }
 
 .star{
@@ -211,7 +212,7 @@ figure {
     -o-border-radius: 20rem;
     color: #fff;
     font-weight: bold;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
   }
 }
 
@@ -225,7 +226,7 @@ pokemon-info {
 }
 
 /* ///////////////////////////////////////// */
-.short-container {
+/* .short-container {
   width: 65rem;
 
   & h1 {
@@ -240,7 +241,7 @@ pokemon-info {
     padding: 0.6rem 0;
     cursor: pointer;
   }
-}
+} */
 
 .info-message{
   margin-top: 20%;

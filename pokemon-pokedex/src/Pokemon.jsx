@@ -5,9 +5,8 @@ export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavouri
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-  const hasFetched = useRef(false);
 
-  const API = "https://pokeapi.co/api/v2/pokemon?limit=500";
+  const API = "https://pokeapi.co/api/v2/pokemon?limit=5";
 
   const fetchPokemon = async () => {
     try {
@@ -55,6 +54,8 @@ export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavouri
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+
+          
         </div>
 
         <div>
