@@ -12,6 +12,7 @@ html {
 body {
   width: 100%;
   background-color: #eff3ff;
+  padding-bottom: 200px;
 }
 
 h1,
@@ -35,7 +36,7 @@ h1 {
 p,
 span {
   font-size: 1.6rem;
-  font-weight: 100;
+  /* font-weight: 100; */
   margin-top: 6px;
 }
 
@@ -46,8 +47,14 @@ span{
 p{
   font-size: 2.2rem;
   font-weight: 500;
-  color: #484848;
+  color: #6b6b6b;
  
+}
+
+.star{
+  text-align: right;
+  margin-right: 6px;
+  font-size: 30px;
 }
 
 li {
@@ -61,6 +68,7 @@ li {
 .container {
   max-width: 152rem;
   margin: auto;
+  margin-top: 80px;
 }
 
 .grid-three-cols {
@@ -70,6 +78,10 @@ li {
   text-align: center;
   margin: 3.2rem 0;
   align-items: end;
+}
+
+.grid-three-cols span{
+  color:#8e8e8e;
 }
 
 header {
@@ -144,7 +156,7 @@ input:hover {
 
 .pokemon-card {
   width: 36rem;
-  min-height: 42rem;
+  height: 54rem;
   /* border-radius: 10px; */
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
@@ -230,3 +242,51 @@ pokemon-info {
     cursor: pointer;
   }
 }
+
+.info-message{
+  margin-top: 70px;
+}
+
+
+/* NABAR CSS */
+
+.navbar {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  height: 50px;
+  /* background-color: #fff;  */
+  display: flex;
+  justify-content: center;
+  z-index: 999;
+}
+
+.nav-background-card {
+  width: 200px;
+  background-color: rgb(48, 48, 48);
+  border-radius: 40px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.nav-card {
+  height: 34px;
+  font-size: 14px;
+  display: inline;
+  border-radius: 40px; 
+  padding: 10px;
+  background-color: rgb(238, 238, 238);
+
+}
+
+.links{
+  text-decoration: none;
+}
+
+
+.nav-card:active {
+  background-color: rgb(238, 238, 238);
+}
+

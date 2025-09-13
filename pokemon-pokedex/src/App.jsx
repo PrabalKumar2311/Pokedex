@@ -1,13 +1,49 @@
-import { useState } from 'react'
-import './App.css'
-import Pokemon from './Pokemon'
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./Navbar";
+import Pokemon from "./Pokemon.jsx";
+import FavouritePokemons from "./FavouritePokemons.jsx";
+
 
 export default function App() {
-  const [count, setCount] = useState(0)
+  const [pokemon, setPokemon] = useState([]);
+  const [favourites, setFavourites] = useState([]);
+
+  const toggleFavourite = (id) => {
+    setFavourites((prev) =>
+      prev.includes(id)
+        ? prev.filter((favId) => favId !== id)
+        : [...prev, id]
+    );
+  };
 
   return (
-    <>
-      <Pokemon/>
-    </>
-  )
+    <Router>
+      <Navbar />
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Pokemon
+              pokemon={pokemon}
+              setPokemon={setPokemon}
+              favourites={favourites}
+              toggleFavourite={toggleFavourite}
+            />
+          }
+        />
+        <Route
+          path="/favourites"
+          element={
+            <FavouritePokemons
+              pokemon={pokemon}
+              favourites={favourites}
+              toggleFavourite={toggleFavourite}
+            />
+          }
+        />
+      </Routes>
+    </Router>
+  );
 }
