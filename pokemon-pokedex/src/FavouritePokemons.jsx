@@ -8,7 +8,7 @@ export default function FavouritePokemons({
   const favouritePokemonData = pokemon.filter((p) => favourites.includes(p.id));
 
   if (favouritePokemonData.length === 0) {
-    return <p className="no-results info-message">No favourite Pokémon yet.</p>;
+    return <p className="no-results info-message">No favourites yet.</p>;
   }
 
   return (

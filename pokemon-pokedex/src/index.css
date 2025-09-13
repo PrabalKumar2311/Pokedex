@@ -2,7 +2,7 @@
   margin: 0;
   padding:0;
   box-sizing: border-box;
-  font-family: "Urbanist", sans-serif;
+  font-family: "poppins";
 }
 
 html {
@@ -115,7 +115,7 @@ input[type="text"] {
   padding: 0.8em;
   font-size: 1.8rem;
   color: #000000;
-  border-radius: 20px;
+  border-radius: 30px;
   /* -webkit-border-radius: 0.2em 0.2em 0 0;
   -moz-border-radius: 0.2em 0.2em 0 0;
   -ms-border-radius: 0.2em 0.2em 0 0;
@@ -124,8 +124,7 @@ input[type="text"] {
 }
 
 input:hover {
-  transform: scale(1.05);
-  border-radius: 20px;
+  transform: scale(1.03);
   overflow: hidden;
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
@@ -156,7 +155,7 @@ input:hover {
 
 .pokemon-card {
   width: 36rem;
-  height: 54rem;
+  height: 58rem;
   /* border-radius: 10px; */
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
@@ -244,13 +243,14 @@ pokemon-info {
 }
 
 .info-message{
-  margin-top: 70px;
+  margin-top: 20%;
 }
 
 
 /* NABAR CSS */
 
 .navbar {
+  margin-top: 10px;
   position: fixed;
   top: 0px;
   width: 100%;
@@ -262,31 +262,49 @@ pokemon-info {
 }
 
 .nav-background-card {
-  width: 200px;
-  background-color: rgb(48, 48, 48);
-  border-radius: 40px; 
+  width: 220px;
+  height: 60px;
+  /* background-color: rgb(48, 48, 48);  */
+  background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  border-radius: 40px;
+  box-shadow: 0 1px 5px rgba(31, 31, 31, 0.6);
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .nav-card {
-  height: 34px;
-  font-size: 14px;
-  display: inline;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 44px;
+  font-size: 16px;
   border-radius: 40px; 
   padding: 10px;
-  background-color: rgb(238, 238, 238);
-
+  overflow: hidden;
+  transition: transform 0.3s;
+  
 }
 
-.links{
+.links {
+  color: #ccc; 
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-
-.nav-card:active {
-  background-color: rgb(238, 238, 238);
+.links.active {
+  color: black;
 }
 
+.nav-card:hover {
+  background-color: rgb(255, 255, 255);
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
