@@ -9,18 +9,13 @@ export default function App() {
   const [pokemon, setPokemon] = useState([]);
   const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem("favourites")) || []);
 
-const toggleFavourite = (pokemonData) => {
-  setFavourites((prev) => {
-    const exists = prev.find((p) => p.id === pokemonData.id);
-    if (exists) {
-      return prev.filter((p) => p.id !== pokemonData.id);
-    } else {
-      return [...prev, pokemonData];
-    }
-  });
-};
-
-
+  const toggleFavourite = (id) => {
+    setFavourites((prev) =>
+      prev.includes(id)
+        ? prev.filter((favId) => favId !== id)
+        : [...prev, id]
+    );
+  };
 
   useEffect(()=>{
     const storedFavourites = JSON.parse(localStorage.getItem("favourites")) || [];

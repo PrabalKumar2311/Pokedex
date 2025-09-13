@@ -6,7 +6,7 @@ export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavouri
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
 
-  const API = "https://pokeapi.co/api/v2/pokemon?limit=5";
+  const API = "https://pokeapi.co/api/v2/pokemon?limit=500";
 
   const fetchPokemon = async () => {
     try {
@@ -37,7 +37,18 @@ export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavouri
     curPokemon.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (loading) return <p className="no-results info-message">Loading...</p>;
+  // if (loading) return <p className="no-results info-message">Loading...</p>;
+
+  if (loading)
+    return (
+      <div className="loading">
+        <div className="progress-bar">
+          <div className="progress"></div>
+        </div>
+        <p>Loading Pokémons...</p>
+      </div>
+    );
+    
   if (error) return <p className="no-results info-message">{error.message}</p>;
 
   return (
