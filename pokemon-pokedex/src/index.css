@@ -27,7 +27,7 @@ h6 {
 h1 {
   font-size: 5.4rem;
   font-weight: bold;
-  color: #000 !important;
+  color: #3d3d3d !important;
   text-align: center;
 }
 
@@ -105,8 +105,7 @@ header {
   }
 }
 
-input[type="text"] {
-  appearance: none;
+input[type="text"]{
   border: none;
   outline: none;
   width: 32rem;
@@ -117,14 +116,72 @@ input[type="text"] {
   font-size: 1.8rem;
   color: #000000;
   border-radius: 30px;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+
+input:hover {
+  /* transform: scale(1.03); */
+  transition: box-shadow 0.3s ease-in-out;
+  overflow: hidden;
+  box-shadow: rgba(17, 12, 36, 0.15) 0px 48px 100px 0px;
+}
+
+.region{
+  cursor: pointer;
+  text-align: center;
+  width: 170px;
+  border:  1.2px solid #d5d5d5;
+  background: rgba(#e91e63, 0.2);
+  border-radius: 0.2em 0.2em 0 0;
+  padding: 0.8em;
+  font-size: 1.8rem;
+  color: rgb(117, 117, 117);
+  background-color: white;
+  border-radius: 30px;
   transition: transform 0.3s ease;
 }
 
-input:hover {
-  transform: scale(1.03);
-  overflow: hidden;
+.region:hover .region-content{
+  display: block;
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
+
+.region-content{
+  box-shadow: 0 10px 20px rgba(48, 48, 48, 0.2);
+  left: auto;
+  margin-left: -14px;
+  width: 170px;
+  top: auto;
+  margin-top: 15px;
+  border:  1.2px solid #d5d5d5;
+  border-radius: 30px;
+  background-color: rgb(248, 248, 248);
+  z-index: 998;
+  position: absolute;
+  overflow: hidden;
+  display: none;
+}
+
+.region-content:hover{
+
+}
+
+.region-content p {
+  padding: 0.8em;
+  transition: 
+    background-color 0.3s ease-in-out, 
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease-in-out;
+}
+
+.region-content p:hover {
+  
+  /* background-color: #ebebeb; */
+  transform: scale(1.05);          /* slightly enlarge */
+  text-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
 
 .no-results{
   text-align: center;
@@ -165,10 +222,9 @@ figure {
 
 .pokemon-name {
   position: relative;
-  z-index: 999; 
+  z-index: 997; 
   font-size: 3.2rem;
   text-align: center;
-  color: #000;
   text-transform: capitalize;
   margin-top: 2.4rem;
 }
@@ -195,6 +251,7 @@ figure {
 
 .no-wrap{
   font-size: clamp(18px, 2vw, 16px);
+  text-transform: capitalize;
 }
 
 .info-message{
@@ -250,7 +307,7 @@ figure {
   color: #ccc; 
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s ease, background-color 0.3s ease;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 .links.active {
@@ -258,8 +315,9 @@ figure {
 }
 
 .nav-card:hover {
-  background-color: rgb(255, 255, 255);
-  transition: color 0.3s ease, background-color 0.3s ease;
+  /* background-color: rgb(255, 255, 255); */
+  transition: transform 0.3s color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  transform: scale(1.05);
 }
 
 /* Loading */
@@ -294,3 +352,5 @@ figure {
   50%  { transform: translateX(0%); }
   100% { transform: translateX(100%); }
 }
+
+

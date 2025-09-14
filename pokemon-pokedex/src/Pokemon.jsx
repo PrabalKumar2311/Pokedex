@@ -1,16 +1,45 @@
-import { useState, useEffect, useRef} from "react";
-import PokemonCard from "./PokemonCard.jsx"
+import { useState, useEffect, useRef } from "react";
+import PokemonCard from "./PokemonCard.jsx";
 
-export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavourite }) {
+export default function Pokemon({
+  pokemon,
+  setPokemon,
+  favourites,
+  toggleFavourite,
+}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
+  const [region, setRegion] = useState(
+    JSON.parse(localStorage.getItem("selectedRegion")) || {
+      name: "KANTO",
+      value: 151,
+    }
+  );
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const API = "https://pokeapi.co/api/v2/pokemon?limit=500";
+  const API = `https://pokeapi.co/api/v2/pokemon?limit=${region?.value ?? 151}`;
+
+  const regions = [
+    { name: "KANTO", value: 151 },
+    { name: "JOHTO", value: 251 },
+    { name: "HOENN", value: 386 },
+    { name: "SINNOH", value: 493 },
+    { name: "UNOVA", value: 649 },
+    { name: "KALOS", value: 721 },
+    { name: "ALOLA", value: 807 },
+    { name: "GALAR", value: 898 },
+  ];
+
+  const handleClick = (item) => {
+    setRegion(item);
+    setIsDropdownOpen(false);
+    localStorage.setItem("selectedRegion", JSON.stringify(item));
+  };
 
   const fetchPokemon = async () => {
     try {
-      console.log("API")
+      console.log("API");
       const res = await fetch(API);
       const data = await res.json();
 
@@ -31,7 +60,8 @@ export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavouri
 
   useEffect(() => {
     fetchPokemon();
-}, []);
+    console.log(region);
+  }, [region]);
 
   const searchData = pokemon.filter((curPokemon) =>
     curPokemon.name.toLowerCase().includes(search.toLowerCase())
@@ -48,7 +78,7 @@ export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavouri
         <p>Loading Pokémons...</p>
       </div>
     );
-    
+
   if (error) return <p className="no-results info-message">{error.message}</p>;
 
   return (
@@ -66,7 +96,21 @@ export default function Pokemon({ pokemon, setPokemon, favourites, toggleFavouri
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          
+          <div
+            className="region"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            <div className="selected-region">{region.name}</div>
+            {isDropdownOpen && (
+              <div className="region-content">
+                {regions.map((item) => (
+                  <p key={item.name} onClick={() => handleClick(item)}>
+                    {item.name}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div>
