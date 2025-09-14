@@ -20,6 +20,8 @@ export default function Pokemon({
 
   const API = `https://pokeapi.co/api/v2/pokemon?limit=${region?.value ?? 151}`;
 
+  // Region logic
+
   const regions = [
     { name: "KANTO", value: 151 },
     { name: "JOHTO", value: 251 },
@@ -36,6 +38,39 @@ export default function Pokemon({
     setIsDropdownOpen(false);
     localStorage.setItem("selectedRegion", JSON.stringify(item));
   };
+
+  // Filter by type logic
+
+const [type, setType] = useState("ALL");
+const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+
+const types = [
+  "ALL",
+  "Normal",
+  "Fire",
+  "Water",
+  "Grass",
+  "Electric",
+  "Ice",
+  "Fighting",
+  "Poison",
+  "Ground",
+  "Flying",
+  "Psychic",
+  "Bug",
+  "Rock",
+  "Ghost",
+  "Dragon",
+  "Dark",
+  "Steel",
+  "Fairy"
+];
+
+const handleTypeClick = (selectedType) => {
+  setType(selectedType);
+  setIsTypeDropdownOpen(false);
+};
+
 
   const fetchPokemon = async () => {
     try {
@@ -63,9 +98,20 @@ export default function Pokemon({
     console.log(region);
   }, [region]);
 
-  const searchData = pokemon.filter((curPokemon) =>
-    curPokemon.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredData = pokemon.filter((curPokemon) => {
+  const matchesSearch = curPokemon.name
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  const matchesType =
+    type === "ALL" ||
+    curPokemon.types.some(
+      (t) => t.type.name.toLowerCase() === type.toLowerCase()
+    );
+
+  return matchesSearch && matchesType;
+});
+
 
   // if (loading) return <p className="no-results info-message">Loading...</p>;
 
@@ -79,7 +125,25 @@ export default function Pokemon({
       </div>
     );
 
-  if (error) return <p className="no-results info-message">{error.message}</p>;
+  if (error)
+    return (
+      <div className="no-results info-message">
+        <p>{error.message}</p>
+        <button
+          onClick={() => {
+            setError(null); // clear error
+            setLoading(true); // show loader again
+
+            const kanto = { name: "KANTO", value: 151 };
+
+            setRegion(kanto);
+            localStorage.setItem("selectedRegion", JSON.stringify(kanto));
+          }}
+        >
+          Return to KANTO
+        </button>
+      </div>
+    );
 
   return (
     <>
@@ -95,11 +159,14 @@ export default function Pokemon({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-
+          {/* REGION */}
           <div
             className="region"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
+            <div className="arrow">
+              <i className="fa-solid fa-sort-down"></i>
+            </div>
             <div className="selected-region">{region.name}</div>
             {isDropdownOpen && (
               <div className="region-content">
@@ -111,23 +178,44 @@ export default function Pokemon({
               </div>
             )}
           </div>
+
+          {/* TYPE */}
+          <div
+            className="types"
+            onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
+          >
+            <div className="arrow">
+              <i className="fa-solid fa-sort-down"></i>
+            </div>
+            <div className="selected-type">{type}</div>
+            {isTypeDropdownOpen && (
+              <div className="types-content types-grid">
+                {types.map((t) => (
+                  <p key={t} onClick={() => handleTypeClick(t)}>
+                    {t.toUpperCase()}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div>
-          {searchData.length === 0 ? (
-            <p className="no-results">No Pokémon found.</p>
-          ) : (
-            <ul className="cards">
-              {searchData.map((curPokemon) => (
-                <PokemonCard
-                  key={curPokemon.id}
-                  pokemonData={curPokemon}
-                  isFavourite={favourites.includes(curPokemon.id)}
-                  onFavouriteToggle={toggleFavourite}
-                />
-              ))}
-            </ul>
-          )}
+          {filteredData.length === 0 ? (
+  <p className="no-results">No Pokémon found.</p>
+) : (
+  <ul className="cards">
+    {filteredData.map((curPokemon) => (
+      <PokemonCard
+        key={curPokemon.id}
+        pokemonData={curPokemon}
+        isFavourite={favourites.includes(curPokemon.id)}
+        onFavouriteToggle={toggleFavourite}
+      />
+    ))}
+  </ul>
+)}
+
         </div>
       </section>
     </>
