@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import PokemonCard from "./PokemonCard.jsx";
 
 export default function Pokemon({
@@ -10,6 +10,8 @@ export default function Pokemon({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
+
+  // Region state (persisted in localStorage)
   const [region, setRegion] = useState(
     JSON.parse(localStorage.getItem("selectedRegion")) || {
       name: "KANTO",
@@ -20,8 +22,7 @@ export default function Pokemon({
 
   const API = `https://pokeapi.co/api/v2/pokemon?limit=${region?.value ?? 151}`;
 
-  // Region logic
-
+  // Available regions
   const regions = [
     { name: "KANTO", value: 151 },
     { name: "JOHTO", value: 251 },
@@ -39,42 +40,47 @@ export default function Pokemon({
     localStorage.setItem("selectedRegion", JSON.stringify(item));
   };
 
-  // Filter by type logic
+  // Type filter state (persisted in localStorage)
+  const [type, setType] = useState(
+    JSON.parse(localStorage.getItem("selectedType")) || {
+      name: "All Types",
+      logo: "",
+    }
+  );
+  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
 
-const [type, setType] = useState("ALL");
-const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+  // Available types
+  const types = [
+    { name: "All Types", logo: "" },
+    { name: "Normal", logo: "/PokemonLogos/Normal.png" },
+    { name: "Fire", logo: "/PokemonLogos/Fire.png" },
+    { name: "Water", logo: "/PokemonLogos/Water.png" },
+    { name: "Grass", logo: "/PokemonLogos/Grass.png" },
+    { name: "Electric", logo: "/PokemonLogos/Electric.png" },
+    { name: "Ice", logo: "/PokemonLogos/Ice.png" },
+    { name: "Fighting", logo: "/PokemonLogos/Fighting.png" },
+    { name: "Poison", logo: "/PokemonLogos/Poison.png" },
+    { name: "Ground", logo: "/PokemonLogos/Ground.png" },
+    { name: "Flying", logo: "/PokemonLogos/Flying.png" },
+    { name: "Psychic", logo: "/PokemonLogos/Psychic.png" },
+    { name: "Bug", logo: "/PokemonLogos/Bug.png" },
+    { name: "Rock", logo: "/PokemonLogos/Rock.png" },
+    { name: "Ghost", logo: "/PokemonLogos/Ghost.png" },
+    { name: "Dragon", logo: "/PokemonLogos/Dragon.png" },
+    { name: "Dark", logo: "/PokemonLogos/Dark.png" },
+    { name: "Steel", logo: "/PokemonLogos/Steel.png" },
+    { name: "Fairy", logo: "/PokemonLogos/Fairy.png" },
+  ];
 
-const types = [
-  "ALL",
-  "Normal",
-  "Fire",
-  "Water",
-  "Grass",
-  "Electric",
-  "Ice",
-  "Fighting",
-  "Poison",
-  "Ground",
-  "Flying",
-  "Psychic",
-  "Bug",
-  "Rock",
-  "Ghost",
-  "Dragon",
-  "Dark",
-  "Steel",
-  "Fairy"
-];
+  const handleTypeClick = (selectedType) => {
+    setType(selectedType);
+    setIsTypeDropdownOpen(false);
+    localStorage.setItem("selectedType", JSON.stringify(selectedType));
+  };
 
-const handleTypeClick = (selectedType) => {
-  setType(selectedType);
-  setIsTypeDropdownOpen(false);
-};
-
-
+  // Fetch Pokémon data
   const fetchPokemon = async () => {
     try {
-      console.log("API");
       const res = await fetch(API);
       const data = await res.json();
 
@@ -95,26 +101,24 @@ const handleTypeClick = (selectedType) => {
 
   useEffect(() => {
     fetchPokemon();
-    console.log(region);
   }, [region]);
 
+  // Filtering logic
   const filteredData = pokemon.filter((curPokemon) => {
-  const matchesSearch = curPokemon.name
-    .toLowerCase()
-    .includes(search.toLowerCase());
+    const matchesSearch = curPokemon.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
 
-  const matchesType =
-    type === "ALL" ||
-    curPokemon.types.some(
-      (t) => t.type.name.toLowerCase() === type.toLowerCase()
-    );
+    const matchesType =
+      type.name === "All Types" ||
+      curPokemon.types.some(
+        (t) => t.type.name.toLowerCase() === type.name.toLowerCase()
+      );
 
-  return matchesSearch && matchesType;
-});
+    return matchesSearch && matchesType;
+  });
 
-
-  // if (loading) return <p className="no-results info-message">Loading...</p>;
-
+  // Loading state
   if (loading)
     return (
       <div className="loading">
@@ -125,17 +129,16 @@ const handleTypeClick = (selectedType) => {
       </div>
     );
 
+  // Error state
   if (error)
     return (
       <div className="no-results info-message">
         <p>{error.message}</p>
         <button
           onClick={() => {
-            setError(null); // clear error
-            setLoading(true); // show loader again
-
+            setError(null);
+            setLoading(true);
             const kanto = { name: "KANTO", value: 151 };
-
             setRegion(kanto);
             localStorage.setItem("selectedRegion", JSON.stringify(kanto));
           }}
@@ -145,6 +148,7 @@ const handleTypeClick = (selectedType) => {
       </div>
     );
 
+  // Main UI
   return (
     <>
       <section className="container">
@@ -153,13 +157,15 @@ const handleTypeClick = (selectedType) => {
         </header>
 
         <div className="pokemon-search">
+          {/* Search */}
           <input
             type="text"
             placeholder="Search Pokemon"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {/* REGION */}
+
+          {/* REGION Dropdown */}
           <div
             className="region"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -179,7 +185,7 @@ const handleTypeClick = (selectedType) => {
             )}
           </div>
 
-          {/* TYPE */}
+          {/* TYPE Dropdown */}
           <div
             className="types"
             onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
@@ -187,35 +193,50 @@ const handleTypeClick = (selectedType) => {
             <div className="arrow">
               <i className="fa-solid fa-sort-down"></i>
             </div>
-            <div className="selected-type">{type}</div>
+            <div className="selected-type">
+              {type.logo && (
+                <img src={type.logo} alt={type.name} className="type-logo" />
+              )}
+              <span>{type.name}</span>
+            </div>
+
             {isTypeDropdownOpen && (
               <div className="types-content types-grid">
                 {types.map((t) => (
-                  <p key={t} onClick={() => handleTypeClick(t)}>
-                    {t.toUpperCase()}
-                  </p>
+                  <div
+                    key={t.name}
+                    className="type-option"
+                    onClick={() => handleTypeClick(t)}
+                  >
+                    {t.logo && (
+                      <div className="type-logo-wrapper">
+                        <img src={t.logo} alt={t.name} className="type-logo" />
+                      </div>
+                    )}
+                    <p>{t.name.toUpperCase()}</p>
+                  </div>
                 ))}
               </div>
             )}
           </div>
         </div>
 
+        {/* Pokémon Cards */}
         <div>
           {filteredData.length === 0 ? (
-  <p className="no-results">No Pokémon found.</p>
-) : (
-  <ul className="cards">
-    {filteredData.map((curPokemon) => (
-      <PokemonCard
-        key={curPokemon.id}
-        pokemonData={curPokemon}
-        isFavourite={favourites.includes(curPokemon.id)}
-        onFavouriteToggle={toggleFavourite}
-      />
-    ))}
-  </ul>
-)}
-
+            <p className="no-results">No Pokémon found.</p>
+          ) : (
+            <ul className="cards">
+              {filteredData.map((curPokemon) => (
+                <PokemonCard
+                  key={curPokemon.id}
+                  pokemonData={curPokemon}
+                  isFavourite={favourites.includes(curPokemon.id)}
+                  onFavouriteToggle={toggleFavourite}
+                />
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </>
