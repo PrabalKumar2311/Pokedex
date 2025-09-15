@@ -172,9 +172,9 @@ input:hover {
   -webkit-backdrop-filter: blur(10px); 
 }
 
-.region-content:hover{
+/* .region-content:hover{
 
-}
+} */
 
 .region-content p{
   padding: 0.8em;
@@ -477,4 +477,26 @@ figure {
   0%   { transform: translateX(-100%); }
   50%  { transform: translateX(0%); }
   100% { transform: translateX(100%); }
+}
+
+.error-screen-btn{
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px;
+  padding: 10px 20px;
+  color: white;
+  background-color: rgb(25, 146, 253);
+  border: none;
+  border-radius: 22px;
+  transition: transform 0.2s ease-in-out;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+}
+.error-screen-btn:hover{
+ /* background-color: rgb(23, 132, 227); */
+ transform: scale(1.05);
+}
+
+.error-screen-btn:active{
+  transform: scale(1);
 }

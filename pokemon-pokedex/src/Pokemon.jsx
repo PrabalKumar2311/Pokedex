@@ -140,7 +140,7 @@ const filteredData = pokemon.filter((curPokemon) => {
     return (
       <div className="no-results info-message">
         <p>{error.message}</p>
-        <button
+        <button className="error-screen-btn"
           onClick={() => {
             setError(null);
             setLoading(true);
@@ -149,7 +149,7 @@ const filteredData = pokemon.filter((curPokemon) => {
             localStorage.setItem("selectedRegion", JSON.stringify(kanto));
           }}
         >
-          Return to KANTO
+          Return to Kanto
         </button>
       </div>
     );
