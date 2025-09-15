@@ -53,6 +53,11 @@ export default function App() {
           }
         />
       </Routes>
+
+          {/* <button className="floating-btn">
+            <i class="fa-solid fa-arrow-up-long"></i>
+            </button> */}
+
     </Router>
   );
 }

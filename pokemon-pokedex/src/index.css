@@ -354,6 +354,7 @@ figure {
   text-align: center;
   text-transform: capitalize;
   margin-top: 2.4rem;
+  font-size: clamp(3.0rem, 2vw, 16px); /*  Making the text smaller for every card */
 }
 
 .pokemon-highlight {
@@ -494,9 +495,31 @@ figure {
 }
 .error-screen-btn:hover{
  /* background-color: rgb(23, 132, 227); */
- transform: scale(1.05);
+ transform: scale(1.03);
 }
 
 .error-screen-btn:active{
   transform: scale(1);
+  background-color: rgb(23, 135, 233);
+
 }
+
+/* .floating-btn{
+  position: fixed;
+  right: 6%;
+  bottom: 6%;
+
+  font-size: 30px;
+  padding: 20px 23px;
+  font-weight: bold;
+  
+  
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  border-radius: 50px;
+  overflow: hidden;
+} */
