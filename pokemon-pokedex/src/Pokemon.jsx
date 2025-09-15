@@ -49,7 +49,7 @@ export default function Pokemon({
   );
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
 
-  // Available types
+  // Types
   const types = [
     { name: "All Types", logo: "" },
     { name: "Normal", logo: "/PokemonLogos/Normal.png" },
@@ -104,19 +104,25 @@ export default function Pokemon({
   }, [region]);
 
   // Filtering logic
-  const filteredData = pokemon.filter((curPokemon) => {
-    const matchesSearch = curPokemon.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+const filteredData = pokemon.filter((curPokemon) => {
+  // normalize search input
+  const searchLower = search.toLowerCase();
 
-    const matchesType =
-      type.name === "All Types" ||
-      curPokemon.types.some(
-        (t) => t.type.name.toLowerCase() === type.name.toLowerCase()
-      );
+  // match name OR id
+  const matchesSearch =
+    curPokemon.name.toLowerCase().includes(searchLower) ||
+    curPokemon.id.toString().includes(searchLower);
 
-    return matchesSearch && matchesType;
-  });
+  // match type
+  const matchesType =
+    type.name === "All Types" ||
+    curPokemon.types.some(
+      (t) => t.type.name.toLowerCase() === type.name.toLowerCase()
+    );
+
+  return matchesSearch && matchesType;
+});
+
 
   // Loading state
   if (loading)

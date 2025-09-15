@@ -385,13 +385,6 @@ figure {
   margin-top: 20%;
 }
 
-.types-grid{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-
-}
-
-
 /* NABAR CSS */
 
 .navbar {

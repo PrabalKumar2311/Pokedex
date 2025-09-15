@@ -5,22 +5,24 @@ export default function PokemonCard({
 }) {
 
   const typeColors = {
-    normal: "#A8A77A",
-    fire: "#EE8130",
+    normal: "#929aa1ff",
+    fire: "#f0a161ff",
     water: "#6390F0",
     electric: "#F7D02C",
     grass: "#7AC74C",
     ice: "#96D9D6",
-    fighting:"#ae5b4aff",
-    poison:"#9f5a96ff",
-    psychic: "#F95587",
-    bug: "#A6B91A",
-    rock:"#b8ab6fff",
-    ghost: "#735797",
-    dragon: "#6F35FC",
-    dark:"#725647ff",
-    steel: "#B7B7CE",
-    fairy: "#D685AD",
+    fighting:"#be496aff",
+    poison:"#b65eaaff",
+    ground:"#cc7d4fff",
+    flying:"#95a9daff",
+    psychic: "#e8797aff",
+    bug: "#9bc047ff",
+    rock:"#c4b890ff",
+    ghost: "#5669a8ff",
+    dragon: "#316bc0ff",
+    dark:"#585364ff",
+    steel: "#658da0ff",
+    fairy: "#df93e1ff",
   };
 
   return (
