@@ -78,7 +78,7 @@ li {
   grid-template-columns: repeat(3, 1fr);
   gap: 1.6rem;
   text-align: center;
-  margin: 3.2rem 0;
+  margin: 3.4rem 0;
 }
 
 .grid-three-cols span{
@@ -354,7 +354,18 @@ figure {
   text-align: center;
   text-transform: capitalize;
   margin-top: 2.4rem;
-  font-size: clamp(3.0rem, 2vw, 16px); /*  Making the text smaller for every card */
+  font-size: clamp(3.2rem, 2vw, 16px); /*  Making the text smaller for every card */
+}
+
+.pokemon-name-long {
+  position: relative;
+  z-index: 997; 
+  font-size: 3.2rem;
+  text-align: center;
+  text-transform: capitalize;
+  margin-top: 2.4rem;
+  font-size: clamp(2.8rem, 2vw, 16px); /*  Making the text smaller for every card */
+  text-wrap: 1;
 }
 
 .pokemon-highlight {
