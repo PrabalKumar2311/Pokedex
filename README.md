@@ -48,6 +48,12 @@ Welcome to the **Pokedex App**! This app is designed to provide a seamless and i
 - **Language**: JavaScript
 - **Framework**: React
 
+  
+## How To Run
+
+- Clone the project or download the zip file
+- In the terminal run **npm i**
+- Then **npm run dev**
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
