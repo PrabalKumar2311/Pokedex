@@ -224,7 +224,7 @@ input:hover {
 
 .types-content {
   position: absolute;
-  margin-top: 11px;
+  margin-top: 12px;
   margin-left: -14px;
   width: 550px;   /* 👈 wider than region */
   border: 0.1px solid #d5d5d5;
