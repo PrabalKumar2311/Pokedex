@@ -203,7 +203,7 @@ export default function Pokemon({
           className="types"
           onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
         >
-          <div className="arrow">
+          <div className="arrow-type">
             <i className="fa-solid fa-sort-down"></i>
           </div>
           <div className="selected-type">
