@@ -2,6 +2,8 @@
 
 Welcome to the **Pokedex App**! This app is designed to provide a seamless and intuitive experience for exploring Pokemons.
 
+View the project: https://pokescan-pokedex.netlify.app/
+
 ## Features
 
 1. **View All Pokémon**: Browse through a list of Pokémon with their stats.
