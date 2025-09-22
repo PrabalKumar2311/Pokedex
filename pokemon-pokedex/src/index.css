@@ -57,6 +57,13 @@ p{
   margin-right: 4px;
   font-size: 24px;
   font-weight: light;
+
+  transition: transform 0.5s ease-in-out;
+  transform-origin: right center;
+}
+
+.star:active{
+  transform: scale(1.09);
 }
 
 li {
@@ -144,7 +151,7 @@ input:hover {
   border:  0.1px solid #d5d5d5;;
   border-radius: 0.2em 0.2em 0 0;
   padding: 0.8em;
-  padding-top: 11px;
+  padding-top: 0.8%;
   padding-right: 40px;
   font-size: 1.5rem;
   color: rgb(117, 117, 117);
@@ -213,7 +220,7 @@ input:hover {
   border: 0.1px solid #d5d5d5;
   border-radius: 30px;
   padding: 0.6em;
-  padding-top: 12px;
+  padding-top: 0.8%;
   padding-right: 36px;
   font-size: 1.8rem;
   color: rgb(117, 117, 117);
@@ -357,10 +364,10 @@ input:hover {
   box-shadow: 0 10px 20px rgba(48, 48, 48, 0.2);
 }
 
-.pokemon-card:active {
+/* .pokemon-card:active {
   transform: scale(1.02);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.26);
-}
+} */
 
 figure {
   display: flex;
@@ -555,3 +562,222 @@ figure {
   border-radius: 50px;
   overflow: hidden;
 } */
+
+
+
+/* 🔹 TABLET SCREENS (≤ 1024px) */
+
+
+
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 56%; /* slightly smaller base font */
+  }
+
+  .cards {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 1rem;
+  /* justify-content: center; */
+  }
+
+
+  .pokemon-card {
+    width: 100%;
+    height: auto; /* let it expand naturally */
+  }
+
+   .region{
+    width: 138px;
+    font-size: 1.6rem;
+    margin-right: 12px;
+    padding-top: 11px;
+  }
+  
+  .types {
+    width: 287px;
+    font-size: 1.3rem;
+    margin-right: 12px;
+    padding-top: 12px;
+    padding-left: 12px;
+  }
+
+  .arrow{
+    padding-top: 2px;
+    right: 10px;
+  }
+
+  .arrow-type{
+    padding-top: 1px;
+    right: 10px;
+  }
+
+  .selected-type{
+    width: 110%;
+  }
+
+  .grid-three-cols {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .types-content {
+    width: 380px;
+    right: 0px;
+  }
+
+  .types-grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+
+/* 🔹 MOBILE SCREEENNNSSSS (≤ 600px) */
+
+
+
+@media (max-width: 600px) {
+  html {
+    font-size: 52%; /* base font smaller */
+  }
+
+  .container {
+    margin-top: 40px;
+  }
+
+  .links{
+    font-size:10px;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    margin-top: 70px;
+  }
+
+  .pokemon-type{
+    font-size: 10px;
+    font-weight:500;
+  }
+
+  .cards {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 1rem;
+  justify-content: center;
+  }
+
+  input {
+    margin-right: 5px;
+    margin-left: 10px;
+    width: calc(100% - 20px); /* make input fit nicely */
+  }
+
+  .region,
+  .types {
+    margin-right: 6px; 
+    width: 120px;      
+    font-size: 1.3rem;
+  }
+
+  .region-content{
+    width: 109px;
+  }
+
+.pokemon-card {
+  width: 100%;
+  max-width: 250px; /* keep card size consistent */
+  height: auto;
+  padding: 1.2rem;
+  margin: 0 auto;   /* extra centering if needed */
+}
+
+
+  .grid-three-cols {
+    grid-template-columns: repeat(3, 1fr); /* 2 side by side */
+    gap: 1rem;
+  }
+
+  .pokemon-name,
+  .pokemon-name-long {
+    font-size: clamp(1.9rem, 4vw, 2.4rem);
+  }
+
+  .region{
+    width: 130px;
+    font-size: 1.6rem;
+    /* margin-right: 12px; */
+    padding-top: 3%;
+  }
+  .types {
+    width: 140px;
+    font-size: 1.3rem;
+    margin-right: 12px;
+    padding-top: 12px;
+    padding-left: 12px;
+  }
+
+  input[type="text"]{
+    font-size: 14px;
+    height: 46px;
+    width: 50%;
+    margin-right: 10px;
+    padding-top: 3%;
+    padding-left: 12px;
+  }
+
+  .types-content {
+    width: 380px;
+    right: 0px;
+  }
+
+  .navbar {
+    margin-top: 4px;
+  }
+
+  .nav-background-card {
+    width: 140px;
+    height: 40px;
+    padding: 6px;
+  }
+
+  .error-screen-btn {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+
+  .arrow{
+    padding-top: 2px;
+  }
+
+  .arrow-type{
+    padding-top: 1px;
+    right: 10px;
+  }
+
+  .no-wrap{
+    font-size: clamp(10px, 6px, 16px);
+    text-transform: capitalize;
+  }
+
+  span{
+    font-size:10px;
+  }
+
+  p{
+    font-size: 14px;
+  }
+
+  .pokemon-card {
+  height: 45rem;
+  }
+
+  .star{
+    font-size: 20px;
+  }
+
+}
