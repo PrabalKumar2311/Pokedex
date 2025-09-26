@@ -43,7 +43,14 @@ export default function PokemonCard({
         />
       </figure>
 
-      <h1 className={ pokemonData.name.length<=10 ? "pokemon-name" : "pokemon-name-long"}>{`#${pokemonData.id} ${pokemonData.name}`}</h1>
+      <h1 className={pokemonData.name.length <= 10 ? "pokemon-name" : "pokemon-name-long"}>
+        {`#${pokemonData.id} ${
+          !["koko","bulu","lele","fini"].includes(pokemonData.name.split('-')[1]?.toLowerCase())
+            ? pokemonData.name.split('-')[0]
+            : pokemonData.name
+        }`}
+      </h1>
+
       
       <div className="pokemon-info pokemon-highlight">
         {pokemonData.types.map((curType, idx) => {

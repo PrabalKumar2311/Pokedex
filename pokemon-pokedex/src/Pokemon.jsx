@@ -166,6 +166,24 @@ export default function Pokemon({
       </div>
     );
 
+//     const input = document.querySelector('input[type="text"]');
+//     const typeText = document.querySelector('.type-text');
+
+// function updatePlaceholder() {
+//   if (!input || !typeText) return;
+//   if (window.innerWidth < 410) {
+//     input.placeholder = "Search";
+//     typeText.innerHTML = "All"
+//   } else {
+//     input.placeholder = "Search Pokemon";
+    
+//   }
+// }
+
+// updatePlaceholder();
+
+// window.addEventListener("resize", updatePlaceholder);
+
   // Main UI
   return (
     <section className="container">
@@ -214,7 +232,7 @@ export default function Pokemon({
             {type.logo && (
               <img src={type.logo} alt={type.name} className="type-logo" />
             )}
-            <span>{type.name}</span>
+            <span className="type-text">{type.name}</span>
           </div>
 
           {isTypeDropdownOpen && (
@@ -254,6 +272,11 @@ export default function Pokemon({
             ))}
           </ul>
         )}
+      </div>
+
+      <div className="bottom-logo-container">
+        <img className="bottom-logo" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        src="../public/title-img.png"/>
       </div>
     </section>
   );
