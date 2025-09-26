@@ -91,6 +91,7 @@ export default function Pokemon({
         `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
       );
       const data = await res.json();
+      console.log(data)
 
       const detailedPokemonData = data.results.map(async (curPokemon) => {
         const res = await fetch(curPokemon.url);
@@ -100,6 +101,9 @@ export default function Pokemon({
       const detailedResponses = await Promise.all(detailedPokemonData);
       setPokemon(detailedResponses);
       setLoading(false);
+
+      console.log(detailedPokemonData)
+
     } catch (error) {
       console.error(error);
       setError(error);
