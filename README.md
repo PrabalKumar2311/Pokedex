@@ -60,7 +60,7 @@ View the project: https://pokescan-pokedex.netlify.app/
 
 ## Enhancements
 
-Pokemon 892 still takes 2 lines (change css or split by -)
+Pokemon 740, 844, 847 still takes 2 lines after split. 
 Fallback images for pokemons who's images do not load 
 Media queries, make search bar and filter buttons stack on smaller screen sizes
 
