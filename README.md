@@ -57,6 +57,13 @@ View the project: https://pokescan-pokedex.netlify.app/
 - In the terminal run **npm i**
 - Then **npm run dev**
 
+
+## Enhancements
+
+Pokemon 892 still takes 2 lines (change css or split by -)
+Fallback images for pokemons who's images do not load 
+Media queries, make search bar and filter buttons stack on smaller screen sizes
+
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
