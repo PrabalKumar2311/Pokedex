@@ -1,12 +1,100 @@
-# React + Vite
+# 📱 Pokédex — React Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **Pokédex web application** built using **React.js** and **JavaScript**, allowing users to explore Pokémon data through an interactive and responsive interface.
 
-Currently, two official plugins are available:
+The application fetches real-time Pokémon data from the public Pokémon API and provides filtering, search, and favorites functionality for an improved browsing experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* 🔎 Browse Pokémon with a clean and responsive UI
+* 🔍 Search functionality for quick discovery
+* 🌍 Region-based filtering
+* 🧬 Type-based filtering
+* ⭐ Favorite Pokémon page
+* ⚡ Real-time data fetched from Pokémon API
+* 📱 Responsive design for desktop and mobile
+
+---
+
+## 🛠️ Tech Stack
+
+* **React.js**
+* **JavaScript (ES6+)**
+* **Pokémon API (PokéAPI)**
+* CSS / Modern UI Practices
+
+---
+
+## 📸 Preview
+
+<!-- Add project screenshot here -->
+
+<img width="1440" height="900" alt="Pokedex Preview" src="YOUR_IMAGE_LINK_HERE" />
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the project locally.
+
+### 1️⃣ Clone the repository
+
+```bash id="m3v8kt"
+git clone <your-repo-link>
+cd <project-folder>
+```
+
+### 2️⃣ Install dependencies
+
+```bash id="6yzmoh"
+npm install
+```
+
+### 3️⃣ Run the development server
+
+```bash id="yq4mhh"
+npm run dev
+```
+
+---
+
+## 🌐 API Used
+
+* **PokéAPI** — Public Pokémon data API
+  https://pokeapi.co/
+
+---
+
+## 📈 Future Improvements
+
+* Add Pokémon detail modal/page
+* Improved animations and transitions
+* Pagination / infinite scrolling
+* Dark mode support
+* Add a 3D pokemon viewer in detail pokemon page
+
+---
+
+## 🎯 Learning Goals
+
+This project was built to improve understanding of:
+
+* API integration in React
+* State management and filtering logic
+* Dynamic rendering of large datasets
+* Building responsive UI with reusable components
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+**Prabal Kumar**
+Frontend Developer • React • JavaScript
