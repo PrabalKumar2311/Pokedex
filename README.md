@@ -29,9 +29,8 @@ The application fetches real-time Pokémon data from the public Pokémon API and
 
 ## 📸 Preview
 
-<!-- Add project screenshot here -->
+<img width="1440" height="809" alt="Screenshot 2026-02-24 at 7 30 21 PM" src="https://github.com/user-attachments/assets/73eed5d2-ac45-4a21-a34c-e45d1d35019e" />
 
-<img width="1440" height="900" alt="Pokedex Preview" src="YOUR_IMAGE_LINK_HERE" />
 
 ---
 
