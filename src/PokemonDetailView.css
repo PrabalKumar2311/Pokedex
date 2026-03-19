@@ -10,12 +10,11 @@
 
 }
 
-/* 🔥 CARD */
 .pokemon-card-new {
   position: relative;
-  width: min(420px, 95%);
-  max-height: 85vh; /* instead of fixed */
-  height: auto; 
+  width: clamp(280px, 90vw, 420px);
+  max-height: 95vh;
+  height: auto;
   border-radius: 20px;
   overflow: hidden;
   background: #fff;
