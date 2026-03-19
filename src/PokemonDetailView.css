@@ -1,156 +1,191 @@
-.detail-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 40px;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* CLOSE */
-.close-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  border: none;
-  font-size: 22px;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  color: white;
-}
-
-/* HERO */
-.hero-wrapper {
-  position: relative;
-  z-index: 2;
-}
-
-.hero-img {
-  width: 320px;
-  height: 320px;
-  object-fit: contain;
-  filter: drop-shadow(0 30px 40px rgba(0,0,0,0.4));
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-14px); }
-  100% { transform: translateY(0px); }
-}
-
-/* GLASS CARD */
-.glass-card {
-  margin-top: -80px;
-  width: min(600px, 90%);
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 24px;
-  color: white;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-.glass-card h1 {
-  text-align: center;
-  text-transform: capitalize;
-}
-
-/* TYPES */
-.types {
+/* 🔥 OVERLAY */
+.pokemon-detail-wrapper {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin: 12px 0;
+  align-items: center;
+    z-index: 999999; /* 👈 ADD THIS */
+
 }
 
-.types span {
-  background: rgba(255,255,255,0.25);
-  padding: 6px 14px;
+/* 🔥 CARD */
+.pokemon-card-new {
+  position: relative;
+  width: min(420px, 95%);
+  max-height: 85vh; /* instead of fixed */
+  height: auto; 
   border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* 🔥 CLOSE BUTTON */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5000;
+
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(199, 199, 199, 0.6);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: blur(6px);
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  transform: scale(1.1);
+}
+
+/* 🔥 HERO */
+.pokemon-hero {
+  position: relative;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* blur background */
+.pokemon-hero-blur {
+  position: absolute;
+  inset: 0;
+  filter: blur(80px);
+  opacity: 0.5;
+  z-index: 4000;
+}
+
+/* image */
+.pokemon-hero-img {
+  width: 180px;
+  position: relative;
+  z-index: 5000;
+  transform: translateY(10px);
+}
+
+/* title */
+.pokemon-title {
+  text-align: center;
+  z-index: 5000;
+  font-weight: bold;
+  color: rgb(50, 50, 50);
+  font-size: 26px;
   text-transform: capitalize;
 }
 
-/* INFO */
-.info-grid {
-  display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
+/* 🔥 CONTENT */
+.pokemon-content {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1; /* fills remaining space naturally */
 }
 
-.info-grid span {
-  font-size: 12px;
-  opacity: 0.8;
+/* INFO ROW */
+.info-row {
+  display: flex;
+  font-weight: 300;
+  justify-content: space-around;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.info-row p {
+  margin: 0;
+  font-size:18px;
+  color: rgb(67, 67, 67);
+  font-weight: 600 ;
+}
+
+.info-row span {
+  font-size: 16px;
+  color: gray;
 }
 
 /* ABILITIES */
 .abilities {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-/* STATS */
-.stat {
+.ability-card {
+  flex: 1;
+  background: #f3f3f3;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* 🔥 STATS CONTAINER */
+.stats {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 🔥 ROW LAYOUT */
+.stat-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
 }
 
+/* 🔥 LABEL */
+.stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #666;
+  text-align: left;
+}
+
+/* 🔥 VALUE */
+.stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* 🔥 BAR */
 .bar {
-  flex: 1;
   height: 8px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
+  background: #eee;
+  border-radius: 999px;
   overflow: hidden;
 }
 
+/* 🔥 FILL (WITH ANIMATION 😮‍🔥) */
 .fill {
   height: 100%;
-  background: white;
-  border-radius: 10px;
-  transition: width 0.6s ease;
+  border-radius: 999px;
+  width: 0;
+  animation: growBar 0.8s ease forwards;
 }
 
-/* BUTTON */
-.btn-3d {
-  width: 100%;
-  margin-top: 20px;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  background: white;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.btn-3d:hover {
-  transform: scale(1.05);
-}
-
-/* VIEWER */
-.viewer {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-/* LOADING */
-.loading-screen {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
+/* 🔥 ANIMATION */
+@keyframes growBar {
+  from {
+    width: 0;
+  }
 }

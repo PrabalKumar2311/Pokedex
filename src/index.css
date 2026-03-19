@@ -381,7 +381,7 @@ figure {
 
 .pokemon-name {
   position: relative;
-  z-index: 997; 
+  z-index: 9; 
   font-size: 2.9rem;
   text-align: center;
   text-transform: capitalize;
@@ -391,7 +391,7 @@ figure {
 
 .pokemon-name-long {
   position: relative;
-  z-index: 997; 
+  z-index: 9; 
   font-size: 3.2rem;
   text-align: center;
   text-transform: capitalize;

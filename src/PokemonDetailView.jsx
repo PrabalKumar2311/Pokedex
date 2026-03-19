@@ -1,6 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import Bulbasaur from "./Bulbasaur"; // your 3D component
+import {
+  PolarAngleAxis,
+  PolarGrid,
+  Radar,
+  RadarChart,
+  ResponsiveContainer,
+  LabelList,
+} from "recharts";
+import "./PokemonDetailView.css";
 
 export default function PokemonDetailView({ isModal = false }) {
   const { id } = useParams();
@@ -11,18 +19,45 @@ export default function PokemonDetailView({ isModal = false }) {
   const [pokemon, setPokemon] = useState(initialPokemon);
   const [loading, setLoading] = useState(!initialPokemon);
   const [error, setError] = useState(null);
-  const [show3DView, setShow3DView] = useState(false);
 
   const fetchedIdRef = useRef(null);
 
+  const typeColors = {
+    normal: "#929aa1",
+    fire: "#f0a161",
+    water: "#6390F0",
+    electric: "#F7D02C",
+    grass: "#7AC74C",
+    ice: "#96D9D6",
+    fighting: "#be496a",
+    poison: "#b65eaa",
+    ground: "#cc7d4f",
+    flying: "#95a9da",
+    psychic: "#e8797a",
+    bug: "#9bc047",
+    rock: "#c4b890",
+    ghost: "#5669a8",
+    dragon: "#316bc0",
+    dark: "#585364",
+    steel: "#658da0",
+    fairy: "#df93e1",
+  };
+
+  const statLabels = {
+    hp: "HP",
+    attack: "ATK",
+    defense: "DEF",
+    "special-attack": "SPA",
+    "special-defense": "SPD",
+    speed: "SPD",
+  };
+
   useEffect(() => {
-    // If we already have the correct pokemon, do nothing
     if (pokemon && pokemon.id == id) {
       fetchedIdRef.current = id;
       return;
     }
 
-    // If we already fetched this exact id before, avoid re-fetch
     if (fetchedIdRef.current === id) return;
 
     const fetchDetail = async () => {
@@ -43,209 +78,122 @@ export default function PokemonDetailView({ isModal = false }) {
   }, [id, pokemon]);
 
   const close = () => {
-    if (location.state && location.state.background) {
-      navigate(-1);
-    } else {
-      navigate("/");
-    }
+    if (location.state?.background) navigate(-1);
+    else navigate("/");
   };
 
-  const overlayStyle = {
-    position: "fixed",
-    inset: 0,
-    background: "rgba(0,0,0,0.5)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 9999,
-  };
-
-  const contentStyle = {
-    width: isModal ? "min(900px, 95%)" : "700px",
-    maxHeight: "90vh",
-    overflowY: "auto",
-    borderRadius: "12px",
-    background: "#fff",
-    padding: 20,
-    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
-    position: "relative",
-  };
-
-  const viewerOverlayStyle = {
-    position: "fixed",
-    inset: 0,
-    background: "rgba(0,0,0,0.8)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10000,
-  };
-
-  const viewerContentStyle = {
-    width: "min(900px, 95%)",
-    height: "80vh",
-    borderRadius: "12px",
-    background: "#1a1a1a",
-    padding: 20,
-    position: "relative",
-  };
-
-  if (loading)
-    return (
-      <div style={{ padding: 24 }}>
-        <p>Loading...</p>
-      </div>
-    );
-
-  if (error)
-    return (
-      <div style={{ padding: 24 }}>
-        <p>{error.message}</p>
-        <button onClick={close}>Back</button>
-      </div>
-    );
-
-  if (!pokemon)
-    return (
-      <div style={{ padding: 24 }}>
-        <p>Pokemon not found.</p>
-        <button onClick={close}>Back</button>
-      </div>
-    );
+  if (loading) return <div className="loader">Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!pokemon) return <div>Not found</div>;
 
   const image =
     pokemon.sprites?.other?.["official-artwork"]?.front_default ||
-    pokemon.sprites?.other?.dream_world?.front_default ||
-    pokemon.sprites?.front_default ||
-    "";
+    pokemon.sprites?.front_default;
 
-  if (show3DView && pokemon.name === "bulbasaur") {
-    return (
-      <div style={viewerOverlayStyle} onClick={() => setShow3DView(false)}>
-        <div style={viewerContentStyle} onClick={(e) => e.stopPropagation()}>
-          <button
-            onClick={() => setShow3DView(false)}
-            aria-label="Close 3D View"
-            style={{
-              position: "absolute",
-              right: 12,
-              top: 12,
-              background: "transparent",
-              border: "none",
-              fontSize: 24,
-              color: "white",
-              cursor: "pointer",
-              zIndex: 10001,
-            }}
-          >
-            ✕
-          </button>
-          <h3 style={{ color: "white", textAlign: "center", marginBottom: 20 }}>
-            3D Model of Bulbasaur
-          </h3>
-          <Bulbasaur />
-        </div>
-      </div>
-    );
-  }
+  const mainType = pokemon.types[0].type.name;
+  const color = typeColors[mainType] || "#999";
 
-  const body = (
-    <div style={contentStyle} onClick={(e) => e.stopPropagation()}>
-      <button
-        onClick={close}
-        aria-label="Close"
-        style={{
-          position: "absolute",
-          right: 12,
-          top: 12,
-          background: "transparent",
-          border: "none",
-          fontSize: 20,
-          cursor: "pointer",
-        }}
-      >
-        ✕
-      </button>
+  const statData = pokemon.stats.map((s) => ({
+    stat: statLabels[s.stat.name] || s.stat.name,
+    value: Math.min(s.base_stat, 150),
+  }));
 
-      <div style={{ display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
-        <img
-          src={image}
-          alt={pokemon.name}
+  return (
+    <div
+      className="pokemon-detail-wrapper"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) close();
+      }}
+    >
+      <div className="pokemon-card-new" onClick={(e) => e.stopPropagation()}>
+        <button className="close-btn" onClick={close}>
+          ✕
+        </button>
+
+        {/* HERO */}
+        <div
+          className="pokemon-hero"
           style={{
-            width: 220,
-            height: 220,
-            objectFit: "contain",
-            background: "#f4f4f4",
-            borderRadius: 8,
-            padding: 10,
+            background: `linear-gradient(135deg, ${color}, #000)`,
           }}
-        />
+        >
+          <div className="pokemon-hero-blur" style={{ background: color }} />
 
-        <div style={{ flex: 1, minWidth: 250 }}>
-          <h2 style={{ textTransform: "capitalize" }}>
-            #{pokemon.id} {pokemon.name}
-          </h2>
+          <img src={image} alt={pokemon.name} className="pokemon-hero-img" />
+        </div>
 
-          {pokemon.name === "bulbasaur" && (
-            <button
-              style={{
-                padding: "10px 16px",
-                borderRadius: "8px",
-                border: "none",
-                background: "#4CAF50",
-                color: "white",
-                cursor: "pointer",
-                marginTop: "8px",
-                marginBottom: "16px",
-              }}
-              onClick={() => setShow3DView(true)}
-            >
-              VIEW 3D MODEL • Feature Not finished yet
-            </button>
-          )}
+        {/* CONTENT */}
+        <div className="pokemon-content">
 
-          <p>
-            <strong>Types:</strong>{" "}
-            {pokemon.types.map((t) => (
-              <span key={t.type.name} style={{ marginRight: 8 }}>
-                {t.type.name}
-              </span>
+          <div className="pokemon-title">{pokemon.name}</div>
+          {/* INFO */}
+          <div className="info-row">
+            <div>
+              <p>{pokemon.weight}kg</p>
+              <span>Weight</span>
+            </div>
+            <div>
+              <p>{pokemon.types[0]?.type.name}</p>
+              <span>Type</span>
+            </div>
+            <div>
+              <p>{pokemon.height}m</p>
+              <span>Height</span>
+            </div>
+          </div>
+
+          {/* ABILITIES */}
+          <div className="abilities">
+            
+            {pokemon.abilities.slice(0, 2).map((a) => (
+              <div key={a.ability.name} className="ability-card">
+                {a.ability.name}
+              </div>
             ))}
-          </p>
+          </div>
 
-          <p>
-            <strong>Height:</strong> {pokemon.height}
-          </p>
-          <p>
-            <strong>Weight:</strong> {pokemon.weight}
-          </p>
-          <p>
-            <strong>Abilities:</strong>{" "}
-            {pokemon.abilities.map((a) => a.ability.name).join(", ")}
-          </p>
+          {/* 🔥 RADAR GRAPH */}
+          <div className="radar-wrapper">
+            <ResponsiveContainer width="100%" height={240}>
+              <RadarChart data={statData}>
+                <PolarGrid />
 
-          <div style={{ marginTop: 12 }}>
-            <strong>Stats</strong>
-            <ul>
-              {pokemon.stats.map((s) => (
-                <li key={s.stat.name}>
-                  {s.stat.name}: {s.base_stat}
-                </li>
-              ))}
-            </ul>
+                <PolarAngleAxis
+                  dataKey="stat"
+                  tick={({ payload, x, y, textAnchor }) => {
+                    const stat = statData.find((s) => s.stat === payload.value);
+
+                    return (
+                      <g transform={`translate(${x},${y})`}>
+                        <text textAnchor={textAnchor} fill="#666" fontSize={12}>
+                          {payload.value}
+                        </text>
+
+                        <text
+                          dy={14}
+                          textAnchor={textAnchor}
+                          fill="#000"
+                          fontSize={13}
+                          fontWeight="bold"
+                        >
+                          {stat?.value}
+                        </text>
+                      </g>
+                    );
+                  }}
+                />
+
+                <Radar
+                  dataKey="value"
+                  stroke={color}
+                  fill={color}
+                  fillOpacity={0.6}
+                />
+              </RadarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>
     </div>
   );
-
-  if (isModal) {
-    return (
-      <div style={overlayStyle} onClick={close}>
-        {body}
-      </div>
-    );
-  }
-
-  return <div style={{ padding: 24 }}>{body}</div>;
 }
