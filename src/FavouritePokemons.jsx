@@ -1,36 +1,34 @@
+import React, { useMemo } from "react";
 import PokemonCard from "./PokemonCard";
 
-export default function FavouritePokemons({
-  pokemon,
-  favourites,
-  toggleFavourite,
-}) {
-  const favouritePokemonData = pokemon.filter((p) => favourites.includes(p.id));
+export default function FavouritePokemons({ allPokemon, favourites, toggleFavourite }) {
+  const favouritePokemon = useMemo(() => {
+    return allPokemon.filter((p) => favourites.includes(p.id));
+  }, [allPokemon, favourites]);
 
-  if (favouritePokemonData.length === 0) {
-    return <p className="no-results info-message">No favourites yet.</p>;
+  if (favouritePokemon.length === 0) {
+    return (
+      <div className="no-results">
+        <p>No favourite Pokémon yet.</p>
+      </div>
+    );
   }
 
   return (
-    <>
-      <section className="container">
-        <header>
-          <h1>All Your Favourites</h1>
-        </header>
-
-        <div>
-          <ul className="cards">
-          {favouritePokemonData.map((curPokemon) => (
-            <PokemonCard
-              key={curPokemon.id}
-              pokemonData={curPokemon}
-              isFavourite={favourites.includes(curPokemon.id)}
-              onFavouriteToggle={toggleFavourite}
-            />
-          ))}
-          </ul>
-        </div>
-      </section>
-    </>
+    <section className="container">
+      <header>
+        <h1>Your Favourite Pokémon</h1>
+      </header>
+      <ul className="cards">
+        {favouritePokemon.map((pokemon) => (
+          <PokemonCard
+            key={pokemon.id}
+            pokemonData={pokemon}
+            isFavourite={true}
+            onFavouriteToggle={toggleFavourite}
+          />
+        ))}
+      </ul>
+    </section>
   );
 }

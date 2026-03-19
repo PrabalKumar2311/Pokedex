@@ -1,6 +1,6 @@
-// PokemonCardDetailView.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import Bulbasaur from "./Bulbasaur"; // your 3D component
 
 export default function PokemonDetailView({ isModal = false }) {
   const { id } = useParams();
@@ -11,23 +11,34 @@ export default function PokemonDetailView({ isModal = false }) {
   const [pokemon, setPokemon] = useState(initialPokemon);
   const [loading, setLoading] = useState(!initialPokemon);
   const [error, setError] = useState(null);
+  const [show3DView, setShow3DView] = useState(false);
+
+  const fetchedIdRef = useRef(null);
 
   useEffect(() => {
-    if (pokemon) return;
+    // If we already have the correct pokemon, do nothing
+    if (pokemon && pokemon.id == id) {
+      fetchedIdRef.current = id;
+      return;
+    }
+
+    // If we already fetched this exact id before, avoid re-fetch
+    if (fetchedIdRef.current === id) return;
+
     const fetchDetail = async () => {
       try {
         setLoading(true);
-        setError(null);
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch Pokémon details");
         const data = await res.json();
         setPokemon(data);
+        fetchedIdRef.current = id;
       } catch (err) {
         setError(err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchDetail();
   }, [id, pokemon]);
 
@@ -60,6 +71,25 @@ export default function PokemonDetailView({ isModal = false }) {
     position: "relative",
   };
 
+  const viewerOverlayStyle = {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.8)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 10000,
+  };
+
+  const viewerContentStyle = {
+    width: "min(900px, 95%)",
+    height: "80vh",
+    borderRadius: "12px",
+    background: "#1a1a1a",
+    padding: 20,
+    position: "relative",
+  };
+
   if (loading)
     return (
       <div style={{ padding: 24 }}>
@@ -83,12 +113,41 @@ export default function PokemonDetailView({ isModal = false }) {
       </div>
     );
 
-  // image fallback
   const image =
     pokemon.sprites?.other?.["official-artwork"]?.front_default ||
     pokemon.sprites?.other?.dream_world?.front_default ||
     pokemon.sprites?.front_default ||
     "";
+
+  if (show3DView && pokemon.name === "bulbasaur") {
+    return (
+      <div style={viewerOverlayStyle} onClick={() => setShow3DView(false)}>
+        <div style={viewerContentStyle} onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={() => setShow3DView(false)}
+            aria-label="Close 3D View"
+            style={{
+              position: "absolute",
+              right: 12,
+              top: 12,
+              background: "transparent",
+              border: "none",
+              fontSize: 24,
+              color: "white",
+              cursor: "pointer",
+              zIndex: 10001,
+            }}
+          >
+            ✕
+          </button>
+          <h3 style={{ color: "white", textAlign: "center", marginBottom: 20 }}>
+            3D Model of Bulbasaur
+          </h3>
+          <Bulbasaur />
+        </div>
+      </div>
+    );
+  }
 
   const body = (
     <div style={contentStyle} onClick={(e) => e.stopPropagation()}>
@@ -126,6 +185,24 @@ export default function PokemonDetailView({ isModal = false }) {
           <h2 style={{ textTransform: "capitalize" }}>
             #{pokemon.id} {pokemon.name}
           </h2>
+
+          {pokemon.name === "bulbasaur" && (
+            <button
+              style={{
+                padding: "10px 16px",
+                borderRadius: "8px",
+                border: "none",
+                background: "#4CAF50",
+                color: "white",
+                cursor: "pointer",
+                marginTop: "8px",
+                marginBottom: "16px",
+              }}
+              onClick={() => setShow3DView(true)}
+            >
+              VIEW 3D MODEL • Feature Not finished yet
+            </button>
+          )}
 
           <p>
             <strong>Types:</strong>{" "}
@@ -170,6 +247,5 @@ export default function PokemonDetailView({ isModal = false }) {
     );
   }
 
-  // Full page (non-modal)
   return <div style={{ padding: 24 }}>{body}</div>;
 }

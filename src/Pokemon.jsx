@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import PokemonCard from "./PokemonCard.jsx";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import PokemonCard from "./PokemonCard";
 
 export default function Pokemon({
-  pokemon,
-  setPokemon,
+  currentRegionData,
+  setCurrentRegionData,
+  regionsData,
+  fetchRegion,
   favourites,
   toggleFavourite,
 }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-
-  // Region state (persisted in localStorage)
   const [region, setRegion] = useState(
     JSON.parse(localStorage.getItem("selectedRegion")) || {
       name: "KANTO",
@@ -20,8 +20,15 @@ export default function Pokemon({
     }
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [type, setType] = useState(
+    JSON.parse(localStorage.getItem("selectedType")) || {
+      name: "All Types",
+      logo: "",
+    }
+  );
+  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
 
-  // Available regions (start & end ranges)
+  // Available regions
   const regions = [
     { name: "KANTO", start: 1, end: 151 },
     { name: "JOHTO", start: 152, end: 251 },
@@ -34,22 +41,7 @@ export default function Pokemon({
     { name: "ALL", start: 1, end: 898 },
   ];
 
-  const handleClick = (item) => {
-    setRegion(item);
-    setIsDropdownOpen(false);
-    localStorage.setItem("selectedRegion", JSON.stringify(item));
-  };
-
-  // Type filter state (persisted in localStorage)
-  const [type, setType] = useState(
-    JSON.parse(localStorage.getItem("selectedType")) || {
-      name: "All Types",
-      logo: "",
-    }
-  );
-  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
-
-  // Types
+  // Available types
   const types = [
     { name: "All Types", logo: "" },
     { name: "Normal", logo: "/PokemonLogos/Normal.png" },
@@ -72,67 +64,58 @@ export default function Pokemon({
     { name: "Fairy", logo: "/PokemonLogos/Fairy.png" },
   ];
 
-  const handleTypeClick = (selectedType) => {
+  // Handlers
+  const handleRegionClick = useCallback((item) => {
+    setRegion(item);
+    setIsDropdownOpen(false);
+    localStorage.setItem("selectedRegion", JSON.stringify(item));
+  }, []);
+
+  const handleTypeClick = useCallback((selectedType) => {
     setType(selectedType);
     setIsTypeDropdownOpen(false);
     localStorage.setItem("selectedType", JSON.stringify(selectedType));
-  };
+  }, []);
 
-  // Fetch Pokémon data for selected region
-  const fetchPokemon = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const limit = region.end - region.start + 1;
-      const offset = region.start - 1;
-
-      const res = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
-      );
-      const data = await res.json();
-      console.log(data)
-
-      const detailedPokemonData = data.results.map(async (curPokemon) => {
-        const res = await fetch(curPokemon.url);
-        return await res.json();
-      });
-
-      const detailedResponses = await Promise.all(detailedPokemonData);
-      setPokemon(detailedResponses);
-      setLoading(false);
-
-      console.log(detailedPokemonData)
-
-    } catch (error) {
-      console.error(error);
-      setError(error);
-      setLoading(false);
-    }
-  };
-
+  // Load region data (cached or fetch)
   useEffect(() => {
-    fetchPokemon();
-  }, [region]);
+    const loadRegion = async () => {
+      if (regionsData[region.name]) {
+        setCurrentRegionData(regionsData[region.name]);
+        setLoading(false);
+        setError(null);
+        return;
+      }
+      try {
+        setLoading(true);
+        setError(null);
+        await fetchRegion(region);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadRegion();
+  }, [region, regionsData, fetchRegion, setCurrentRegionData]);
 
-  // Filtering logic
-  const filteredData = pokemon.filter((curPokemon) => {
-    const searchLower = search.toLowerCase();
+  // Memoized filtered data
+  const filteredData = useMemo(() => {
+    return currentRegionData.filter((curPokemon) => {
+      const searchLower = search.toLowerCase();
+      const matchesSearch =
+        curPokemon.name.toLowerCase().includes(searchLower) ||
+        curPokemon.id.toString().includes(searchLower);
 
-    // Match by name or ID
-    const matchesSearch =
-      curPokemon.name.toLowerCase().includes(searchLower) ||
-      curPokemon.id.toString().includes(searchLower);
+      const matchesType =
+        type.name === "All Types" ||
+        curPokemon.types.some(
+          (t) => t.type.name.toLowerCase() === type.name.toLowerCase()
+        );
 
-    // Match by type
-    const matchesType =
-      type.name === "All Types" ||
-      curPokemon.types.some(
-        (t) => t.type.name.toLowerCase() === type.name.toLowerCase()
-      );
-
-    return matchesSearch && matchesType;
-  });
+      return matchesSearch && matchesType;
+    });
+  }, [currentRegionData, search, type]);
 
   // Loading state
   if (loading)
@@ -166,24 +149,6 @@ export default function Pokemon({
       </div>
     );
 
-//     const input = document.querySelector('input[type="text"]');
-//     const typeText = document.querySelector('.type-text');
-
-// function updatePlaceholder() {
-//   if (!input || !typeText) return;
-//   if (window.innerWidth < 410) {
-//     input.placeholder = "Search";
-//     typeText.innerHTML = "All"
-//   } else {
-//     input.placeholder = "Search Pokemon";
-    
-//   }
-// }
-
-// updatePlaceholder();
-
-// window.addEventListener("resize", updatePlaceholder);
-
   // Main UI
   return (
     <section className="container">
@@ -192,7 +157,7 @@ export default function Pokemon({
       </header>
 
       <div className="pokemon-search">
-        {/* Search */}
+        {/* Search input */}
         <input
           type="text"
           placeholder="Search Pokemon"
@@ -200,7 +165,7 @@ export default function Pokemon({
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* REGION Dropdown */}
+        {/* Region dropdown */}
         <div
           className="region"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -212,7 +177,7 @@ export default function Pokemon({
           {isDropdownOpen && (
             <div className="region-content">
               {regions.map((item) => (
-                <p key={item.name} onClick={() => handleClick(item)}>
+                <p key={item.name} onClick={() => handleRegionClick(item)}>
                   {item.name}
                 </p>
               ))}
@@ -220,7 +185,7 @@ export default function Pokemon({
           )}
         </div>
 
-        {/* TYPE Dropdown */}
+        {/* Type dropdown */}
         <div
           className="types"
           onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
@@ -234,7 +199,6 @@ export default function Pokemon({
             )}
             <span className="type-text">{type.name}</span>
           </div>
-
           {isTypeDropdownOpen && (
             <div className="types-content types-grid">
               {types.map((t) => (
@@ -256,7 +220,7 @@ export default function Pokemon({
         </div>
       </div>
 
-      {/* Pokémon Cards */}
+      {/* Cards */}
       <div>
         {filteredData.length === 0 ? (
           <p className="no-results">No Pokémon found.</p>
@@ -275,8 +239,12 @@ export default function Pokemon({
       </div>
 
       <div className="bottom-logo-container">
-        <img className="bottom-logo" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        src="../public/title-img.png"/>
+        <img
+          className="bottom-logo"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          src="../public/title-img.png"
+          alt="Scroll to top"
+        />
       </div>
     </section>
   );
